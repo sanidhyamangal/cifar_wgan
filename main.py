@@ -10,16 +10,17 @@ import PIL  # for image related ops
 import tensorflow as tf  # for deep learning related steps
 from IPython import display
 
-from models import (WasserstienDiscriminative,  # load models
-                     WasserstienGenerative)
-from utils import generate_and_save_images # function to generate and save images
-
+from models import (
+    WasserstienDiscriminative,  # load models
+    WasserstienGenerative)
+from utils import generate_and_save_images  # function to generate and save images
 
 # Get traning dataset
 (X_train, _), (x_test, _) = tf.keras.datasets.cifar10.load_data()
 
-train_dataset = tf.data.Dataset.from_tensor_slices((tf.cast(X_train, tf.float32))).map(lambda x: (x-127.5)/127.5).shuffle(50000).batch(256)
-
+train_dataset = tf.data.Dataset.from_tensor_slices((tf.cast(
+    X_train,
+    tf.float32))).map(lambda x: (x - 127.5) / 127.5).shuffle(50000).batch(256)
 
 # intansiate generator
 generator = WasserstienGenerative()
@@ -34,6 +35,7 @@ discriminator = WasserstienDiscriminative()
 decision = discriminator(generated_image)
 print(decision)
 
+
 # create a loss for generative
 def generator_loss(fake_output):
     return -tf.reduce_mean(fake_output)
@@ -42,6 +44,7 @@ def generator_loss(fake_output):
 # create a loss function for discriminator
 def discriminator_loss(real_output, fake_output):
     return tf.reduce_mean(fake_output) - tf.reduce_mean(real_output)
+
 
 # optimizers for the generative models
 generator_optimizer = tf.keras.optimizers.Adam(1e-4)
@@ -92,6 +95,7 @@ def train_step(images):
         zip(gradients_of_generator, generator.trainable_variables))
     discriminator_optimizer.apply_gradients(
         zip(gradients_of_discriminator, discriminator.trainable_variables))
+
 
 def train(dataset, epochs):
     """

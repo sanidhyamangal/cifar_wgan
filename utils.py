@@ -3,7 +3,8 @@ Author: Sanidhya Mangal
 Github: sanidhyamangal
 """
 
-import matplotlib.pyplot as plt # for plotting
+import matplotlib.pyplot as plt  # for plotting
+
 
 def generate_and_save_images(model, name, test_input):
     """
